@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-custstgacct--synapseajithrdelta-ajithrdestinationadls",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/CentricaADFVivek/providers/Microsoft.Storage/storageAccounts/ajithrdestinationadls",
+		"groupId": "dfs",
+		"fqdns": [
+			"ajithrdestinationadls.dfs.core.windows.net"
+		]
+	}
+}

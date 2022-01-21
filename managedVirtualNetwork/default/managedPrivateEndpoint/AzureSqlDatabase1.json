@@ -1,0 +1,10 @@
+{
+	"name": "AzureSqlDatabase1",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/hive-ranger-policy-migration/providers/Microsoft.Sql/servers/hive-rannger-hdi-server",
+		"groupId": "sqlServer",
+		"fqdns": [
+			"hive-rannger-hdi-server.database.windows.net"
+		]
+	}
+}

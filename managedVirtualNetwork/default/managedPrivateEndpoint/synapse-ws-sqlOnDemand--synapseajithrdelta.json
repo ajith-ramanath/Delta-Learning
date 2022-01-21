@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sqlOnDemand--synapseajithrdelta",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta",
+		"groupId": "sqlOnDemand",
+		"fqdns": [
+			"synapseajithrdelta-ondemand.e8f023e7-4a4e-4c8b-bc33-a3beb910d0fb.sql.azuresynapse.net"
+		]
+	}
+}
