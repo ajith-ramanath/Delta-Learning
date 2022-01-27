@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "06c93b70-ec89-4bf4-95e3-534f6de59e2f"
+				"spark.autotune.trackingId": "b2fa766c-518a-4b64-ba8e-d7c0e922f3f7"
 			}
 		},
 		"metadata": {
@@ -73,9 +73,32 @@
 					"# Tables names\r\n",
 					"ratings_table = \"ratings\"\r\n",
 					"credits_table = \"credits\"\r\n",
-					"keywords_tables = \"keywords\"\r\n",
+					"keywords_table = \"keywords\"\r\n",
 					"links_table = \"links\"\r\n",
-					"metadata_table = \"movie-metadata\""
+					"metadata_table = \"metadata\""
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Delete stuff if needed\r\n",
+					"spark.sql(\"DROP TABLE IF EXISTS \" + ratings_table)\r\n",
+					"spark.sql(\"DROP TABLE IF EXISTS \" + credits_table)\r\n",
+					"spark.sql(\"DROP TABLE IF EXISTS \" + keywords_table)\r\n",
+					"spark.sql(\"DROP TABLE IF EXISTS \" + links_table)\r\n",
+					"spark.sql(\"DROP TABLE IF EXISTS \" + metadata_table)"
 				],
 				"execution_count": 4
 			},
