@@ -4,20 +4,20 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "sparkpool",
+			"referenceName": "sparkpool2",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "28g",
-			"driverCores": 4,
-			"executorMemory": "28g",
-			"executorCores": 4,
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
 			"numExecutors": 1,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
-				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "2ba5dd8e-87ca-4165-8372-5f07f5d82e2e"
+				"spark.dynamicAllocation.maxExecutors": "10",
+				"spark.autotune.trackingId": "0d6f0d70-e7c8-4d8d-aece-10dac4849a02"
 			}
 		},
 		"metadata": {
@@ -31,18 +31,18 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta/bigDataPools/sparkpool",
-				"name": "sparkpool",
+				"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta/bigDataPools/sparkpool2",
+				"name": "sparkpool2",
 				"type": "Spark",
-				"endpoint": "https://synapseajithrdelta.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool",
+				"endpoint": "https://synapseajithrdelta.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool2",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
 				"sparkVersion": "3.1",
 				"nodeCount": 10,
-				"cores": 4,
-				"memory": 28,
+				"cores": 8,
+				"memory": 56,
 				"automaticScaleJobs": true
 			},
 			"sessionKeepAliveTimeout": 30
@@ -100,7 +100,7 @@
 					"spark.sql(\"DROP TABLE IF EXISTS \" + links_table)\r\n",
 					"spark.sql(\"DROP TABLE IF EXISTS \" + metadata_table)"
 				],
-				"execution_count": 4
+				"execution_count": 6
 			},
 			{
 				"cell_type": "code",
@@ -111,9 +111,12 @@
 					"# Write the data to its target.\r\n",
 					"ratings_df.write \\\r\n",
 					"  .format(write_format) \\\r\n",
-					"  .save(save_path + \"/ratings/\")"
+					"  .save(save_path + \"/ratings/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + ratings_table + \" USING DELTA LOCATION '\" + save_path + \"/ratings/'\")"
 				],
-				"execution_count": 6
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -129,8 +132,7 @@
 					}
 				},
 				"source": [
-					"# Create the table.\r\n",
-					"spark.sql(\"CREATE TABLE \" + ratings_table + \" USING DELTA LOCATION '\" + save_path + \"/ratings/'\")"
+					""
 				],
 				"execution_count": 10
 			},
