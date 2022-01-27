@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "6d221f6c-adbf-491e-8c40-b99fbcd8ac35"
+				"spark.autotune.trackingId": "06c93b70-ec89-4bf4-95e3-534f6de59e2f"
 			}
 		},
 		"metadata": {
@@ -25,7 +25,7 @@
 			"enableDebugMode": false,
 			"kernelspec": {
 				"name": "synapse_pyspark",
-				"display_name": "python"
+				"display_name": "Synapse PySpark"
 			},
 			"language_info": {
 				"name": "python"
@@ -50,6 +50,80 @@
 		"cells": [
 			{
 				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Definitions\r\n",
+					"# Define the output formats and paths and the table name.\r\n",
+					"write_format = 'delta'\r\n",
+					"\r\n",
+					"# Load and save paths\r\n",
+					"load_path = 'abfss://datasets@ajithrdestinationadls.dfs.core.windows.net/movies'\r\n",
+					"save_path = 'abfss://datasets@ajithrdestinationadls.dfs.core.windows.net/movies-delta-parquet'\r\n",
+					"\r\n",
+					"# Tables names\r\n",
+					"ratings_table = \"ratings\"\r\n",
+					"credits_table = \"credits\"\r\n",
+					"keywords_tables = \"keywords\"\r\n",
+					"links_table = \"links\"\r\n",
+					"metadata_table = \"movie-metadata\""
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Load the data from its source.\r\n",
+					"ratings_df = spark.read.csv(load_path + \"/ratings.csv\")\r\n",
+					"\r\n",
+					"# Write the data to its target.\r\n",
+					"ratings_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/ratings/\")"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + ratings_table + \" USING DELTA LOCATION '\" + save_path + \"/ratings/'\")"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
 				"source": [
 					""
 				],
