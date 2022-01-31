@@ -17,15 +17,15 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "929de95f-514d-48b6-bb18-35ed9c98fb5b"
+				"spark.autotune.trackingId": "8625ad8b-350d-4c04-9d9f-708ef5739a85"
 			}
 		},
 		"metadata": {
 			"saveOutput": true,
 			"enableDebugMode": false,
 			"kernelspec": {
-				"name": "synapse_spark",
-				"display_name": "Synapse Spark"
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
 			},
 			"language_info": {
 				"name": "scala"
@@ -55,7 +55,7 @@
 					"ratings.describe().show\r\n",
 					"ratings.printSchema"
 				],
-				"execution_count": 13
+				"execution_count": 1
 			},
 			{
 				"cell_type": "code",
@@ -148,8 +148,11 @@
 					"\r\n",
 					"val movies = sql(\"select * from metadata\")\r\n",
 					"val df_full = ratings.join(movies, $\"ratings.movieId\" === $\"metadata.id\").drop($\"ratings.movieId\")\r\n",
+					"val uid = 1\r\n",
 					"\r\n",
-					"movie_query(df_full, Seq(3.0, 4.5), 1)"
+					"for(uid <- 1 to 100) {\r\n",
+					"    movie_query(df_full, Seq(3.0, 4.5), uid)\r\n",
+					"}"
 				],
 				"execution_count": 23
 			},
