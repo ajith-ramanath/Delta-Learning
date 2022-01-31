@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "5f8d00a1-b814-40c1-9733-530656dc0f36"
+				"spark.autotune.trackingId": "d753db02-fafb-4e58-9550-35b2f6d224a5"
 			}
 		},
 		"metadata": {
@@ -77,34 +77,18 @@
 					"links_table = \"links\"\r\n",
 					"metadata_table = \"metadata\""
 				],
-				"execution_count": 9
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
-						"source_hidden": false,
 						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
 					}
 				},
 				"source": [
-					"# Delete stuff if needed\r\n",
 					"spark.sql(\"DROP TABLE IF EXISTS \" + ratings_table)\r\n",
-					"spark.sql(\"DROP TABLE IF EXISTS \" + credits_table)\r\n",
-					"spark.sql(\"DROP TABLE IF EXISTS \" + keywords_table)\r\n",
-					"spark.sql(\"DROP TABLE IF EXISTS \" + links_table)\r\n",
-					"spark.sql(\"DROP TABLE IF EXISTS \" + metadata_table)"
-				],
-				"execution_count": 10
-			},
-			{
-				"cell_type": "code",
-				"source": [
+					"\r\n",
 					"# Load the data from its source.\r\n",
 					"ratings_df = spark.read.csv(load_path + \"/ratings.csv\", header='true', inferSchema='true')\r\n",
 					"\r\n",
@@ -132,6 +116,8 @@
 					}
 				},
 				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + credits_table)\r\n",
+					"\r\n",
 					"# Load the data from its source.\r\n",
 					"credits_df = spark.read.csv(load_path + \"/credits.csv\", header='true', inferSchema='true')\r\n",
 					"\r\n",
@@ -159,6 +145,8 @@
 					}
 				},
 				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + keywords_table)\r\n",
+					"\r\n",
 					"# Load the data from its source.\r\n",
 					"keywords_df = spark.read.csv(load_path + \"/keywords.csv\", header='true', inferSchema='true')\r\n",
 					"\r\n",
@@ -186,6 +174,8 @@
 					}
 				},
 				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + links_table)\r\n",
+					"\r\n",
 					"# Load the data from its source.\r\n",
 					"links_df = spark.read.csv(load_path + \"/links.csv\", header='true', inferSchema='true')\r\n",
 					"\r\n",
@@ -213,8 +203,13 @@
 					}
 				},
 				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + metadata_table)\r\n",
+					"\r\n",
 					"# Load the data from its source.\r\n",
 					"metadata_df = spark.read.csv(load_path + \"/movies_metadata.csv\", header='true', inferSchema='true')\r\n",
+					"\r\n",
+					"metadata_df.withColumn(\"production_companies\").\r\n",
+					"\r\n",
 					"\r\n",
 					"# Write the data to its target.\r\n",
 					"metadata_df.write \\\r\n",
@@ -225,6 +220,63 @@
 					"spark.sql(\"CREATE TABLE \" + metadata_table + \" USING DELTA LOCATION '\" + save_path + \"/metadata/'\")"
 				],
 				"execution_count": 15
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Load the data from its source.\r\n",
+					"metadata_df = spark.read.csv(load_path + \"/movies_metadata.csv\", header='true', inferSchema='true')\r\n",
+					"metadata_df.withColumn()"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"display(metadata_df)"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"execution_count": null
 			}
 		]
 	}
