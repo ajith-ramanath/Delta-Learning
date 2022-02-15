@@ -79,9 +79,7 @@ def run_query(engine_conf, category_conf):
 
     # Read the category configs
 
-    # 
-
-    if ()
+    pass
 
 
 
@@ -93,7 +91,7 @@ def run_test(category, thread_id, test_conf, iters, base_report_dir):
     # Run in Synapse Spark
     for i in range(0, iters):
         st_time = int(time.time())
-        sc = run_query(test_conf["engine"]["synapse"], test_conf[category])
+        sc = run_query(test_conf["engine"]["synapse"], test_conf["operations"][category])
         end_time = int(time.time())
 
         if sc.status != "done":
@@ -109,7 +107,7 @@ def run_test(category, thread_id, test_conf, iters, base_report_dir):
     # Run in ADB Spark clusters
     for i in range(0, iters):
         st_time = int(time.time())
-        sc = run_query(test_conf["engine"]["adb"], test_conf[category])
+        sc = run_query(test_conf["engine"]["adb"], test_conf["operations"][category])
         end_time = int(time.time())
 
         if sc.status != "done":
