@@ -1,0 +1,104 @@
+{
+	"name": "Parquet1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dbo.Details.parquet",
+				"folderPath": "raw",
+				"fileSystem": "reflections"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "BeneficiaryCount",
+				"type": "INT32"
+			},
+			{
+				"name": "TotalClaimCount",
+				"type": "INT32"
+			},
+			{
+				"name": "Total30DayFillCount",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "TotalDaySupply",
+				"type": "INT32"
+			},
+			{
+				"name": "TotalDrugCost",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "BeneCountGe65",
+				"type": "INT32"
+			},
+			{
+				"name": "BeneCountGe65SuppressFlag",
+				"type": "UTF8"
+			},
+			{
+				"name": "TotalClaimCountGe65",
+				"type": "INT32"
+			},
+			{
+				"name": "Ge65SuppressFlag",
+				"type": "UTF8"
+			},
+			{
+				"name": "Total30DayFillCountGe65",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "TotalDrugCostGe65",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "TotalDaySupplyGe65",
+				"type": "INT32"
+			},
+			{
+				"name": "Year",
+				"type": "INT32"
+			},
+			{
+				"name": "YearNPI",
+				"type": "INT32"
+			},
+			{
+				"name": "YearGeoKey",
+				"type": "INT32"
+			},
+			{
+				"name": "YearSpecialtyKey",
+				"type": "INT32"
+			},
+			{
+				"name": "YearDrugKey",
+				"type": "INT32"
+			},
+			{
+				"name": "CostPerDay",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			}
+		]
+	}
+}

@@ -1,0 +1,332 @@
+{
+	"name": "CreateTables_1",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkpool3",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "3f66f3f1-f8ed-443f-b473-386f4efde476"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/delta-swat/providers/Microsoft.Synapse/workspaces/ajithrdeltalearning/bigDataPools/sparkpool3",
+				"name": "sparkpool3",
+				"type": "Spark",
+				"endpoint": "https://ajithrdeltalearning.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 10,
+				"cores": 8,
+				"memory": 56,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql.functions import from_json, col\r\n",
+					"from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType\r\n",
+					"\r\n",
+					"# Definitions\r\n",
+					"# Define the output formats and paths and the table name.\r\n",
+					"write_format = 'delta'\r\n",
+					"\r\n",
+					"# Load and save paths\r\n",
+					"load_path = 'abfss://datasets@ajithrdestinationadls.dfs.core.windows.net/drugs/'\r\n",
+					"save_path = 'abfss://datasets@ajithrdestinationadls.dfs.core.windows.net/drugs-delta/'\r\n",
+					"\r\n",
+					"# Tables names\r\n",
+					"\r\n",
+					"# Check if the path exists, clean up if so.\r\n",
+					"# if ():\r\n",
+					"    #mssparkutils.fs.rm(save_path, True)"
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"drugs_details_df = spark.read.parquet(load_path + \"/details.parquet\")"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"display(spark.read.parquet(load_path + \"/dbo.drugs.parquet\"))"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"display(drugs_details_df)"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + metadata_table)\r\n",
+					"\r\n",
+					"# Load the data from its source.\r\n",
+					"metadata_df = spark.read.csv(load_path + \"/movies_metadata.csv\", header='true', inferSchema='true')\r\n",
+					"\r\n",
+					"btc_schema = StructType(\r\n",
+					"    [\r\n",
+					"        StructField('collection_id', IntegerType(), True),\r\n",
+					"        StructField('collection_name', StringType(), True),\r\n",
+					"        StructField('collection_poster_path', StringType(), True),\r\n",
+					"        StructField('collection_backdrop_path', StringType(), True)\r\n",
+					"    ]\r\n",
+					")\r\n",
+					"\r\n",
+					"exploded_btc_meta_df = metadata_df.withColumn(\"belongs_to_collection\", from_json(\"belongs_to_collection\", btc_schema))\\\r\n",
+					"                             .select(col('adult'), col('belongs_to_collection.*'), col('budget'), col('genres'), col('homepage'), col('id'), \\\r\n",
+					"                                    col('imdb_id'), col('original_language'), col('original_title'), col('overview'), col('popularity'), \\\r\n",
+					"                                    col('poster_path'), col('production_companies'), col('production_countries'), col('release_date'), \\\r\n",
+					"                                    col('revenue'),col('runtime'),col('spoken_languages'),col('status'),col('tagline'),col('title'),\\\r\n",
+					"                                    col('video'), col('vote_average'), col('vote_count'))\r\n",
+					"                         \r\n",
+					"\r\n",
+					"# Write the data to its target.\r\n",
+					"exploded_btc_meta_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/metadata/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + metadata_table + \" USING DELTA LOCATION '\" + save_path + \"/metadata/'\")"
+				],
+				"execution_count": 85
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + ratings_table)\r\n",
+					"\r\n",
+					"ratings_schema = StructType(\r\n",
+					"    [\r\n",
+					"        StructField('userId', IntegerType(), True),\r\n",
+					"        StructField('movieId', IntegerType(), True),\r\n",
+					"        StructField('rating', DoubleType(), True),\r\n",
+					"        StructField('timestamp', StringType(), True)\r\n",
+					"    ]\r\n",
+					")\r\n",
+					"\r\n",
+					"ratings_df = spark.read.csv(load_path + \"/ratings.csv\", header='true', schema=ratings_schema)\r\n",
+					"ratings_df.printSchema()\r\n",
+					"# Write the data to its target.\r\n",
+					"ratings_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/ratings/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + ratings_table + \" USING DELTA LOCATION '\" + save_path + \"/ratings/'\")\r\n",
+					""
+				],
+				"execution_count": 75
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + credits_table)\r\n",
+					"\r\n",
+					"# Load the data from its source.\r\n",
+					"credits_df = spark.read.csv(load_path + \"/credits.csv\", header='true', inferSchema='true')\r\n",
+					"\r\n",
+					"# Write the data to its target.\r\n",
+					"credits_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/credits/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + credits_table + \" USING DELTA LOCATION '\" + save_path + \"/credits/'\")"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + keywords_table)\r\n",
+					"\r\n",
+					"# Load the data from its source.\r\n",
+					"keywords_df = spark.read.csv(load_path + \"/keywords.csv\", header='true', inferSchema='true')\r\n",
+					"\r\n",
+					"# Write the data to its target.\r\n",
+					"keywords_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/keywords/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + keywords_table + \" USING DELTA LOCATION '\" + save_path + \"/keywords/'\")"
+				],
+				"execution_count": 9
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + links_table)\r\n",
+					"\r\n",
+					"# Load the data from its source.\r\n",
+					"links_df = spark.read.csv(load_path + \"/links.csv\", header='true', inferSchema='true')\r\n",
+					"\r\n",
+					"# Write the data to its target.\r\n",
+					"links_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/links/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + links_table + \" USING DELTA LOCATION '\" + save_path + \"/links/'\")"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"display(exploded_btc_meta_df.where(~(col('genres').contains(\"Action\"))))\r\n",
+					"display(ratings_df.filter(\"movieId == 100\").agg({'rating': 'avg'}))"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
