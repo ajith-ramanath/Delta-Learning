@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "95d05036-f979-4ada-9c67-fd7aad1653fc"
+				"spark.autotune.trackingId": "060b6ab5-7a1e-4df4-b4f9-5d185489882e"
 			}
 		},
 		"metadata": {
@@ -90,6 +90,31 @@
 					""
 				],
 				"execution_count": 26
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Get the top drugs in terms of cost across NY, CA, TX states administered in the years between 2014 and 2016\r\n",
+					"\r\n",
+					"states_list = ['NY', 'CA', 'TX']\r\n",
+					"years_list = [2014, 2015, 2016]\r\n",
+					"\r\n",
+					"drugs_df = spark.tables(\"drugs\")\r\n",
+					"display(spark.tables(\"details\").join(drugs_df, 'YearDrugKey' == drugs_df['YearDrugKey']))\r\n",
+					""
+				],
+				"execution_count": 30
 			},
 			{
 				"cell_type": "code",
