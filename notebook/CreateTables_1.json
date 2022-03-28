@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "948b4150-70a3-42f8-876d-bc14ee8b4884"
+				"spark.autotune.trackingId": "a3228d29-fa89-4ab5-8a0d-feae1eb1585c"
 			}
 		},
 		"metadata": {
@@ -85,7 +85,7 @@
 					"# if ():\r\n",
 					"    #mssparkutils.fs.rm(save_path, True)"
 				],
-				"execution_count": 1
+				"execution_count": 7
 			},
 			{
 				"cell_type": "code",
@@ -101,19 +101,19 @@
 					}
 				},
 				"source": [
-					"spark.sql(\"DROP TABLE IF EXISTS \" + metadata_table)\r\n",
-					"drugs_details_df = spark.read.parquet(load_path + \"/details.parquet\")\r\n",
-					"ratings_df.printSchema()\r\n",
+					"spark.sql(\"DROP TABLE IF EXISTS \" + drugs_table)\r\n",
+					"drugs_df = spark.read.parquet(load_path + \"/drugs.parquet\")\r\n",
+					"drugs_df.printSchema()\r\n",
 					"# Write the data to its target.\r\n",
-					"ratings_df.write \\\r\n",
+					"drugs_df.write \\\r\n",
 					"  .format(write_format) \\\r\n",
-					"  .save(save_path + \"/ratings/\")\r\n",
+					"  .save(save_path + \"/drugs/\")\r\n",
 					"\r\n",
 					"# Create the table.\r\n",
-					"spark.sql(\"CREATE TABLE \" + ratings_table + \" USING DELTA LOCATION '\" + save_path + \"/ratings/'\")\r\n",
+					"spark.sql(\"CREATE TABLE \" + drugs_table + \" USING DELTA LOCATION '\" + save_path + \"/drugs/'\")\r\n",
 					""
 				],
-				"execution_count": 2
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -126,13 +126,22 @@
 						"transient": {
 							"deleting": false
 						}
-					},
-					"collapsed": false
+					}
 				},
 				"source": [
-					"display(spark.read.parquet(load_path + \"/dbo.drugs.parquet\"))"
+					"spark.sql(\"DROP TABLE IF EXISTS \" + details_table)\r\n",
+					"details_df = spark.read.parquet(load_path + \"/details.parquet\")\r\n",
+					"details_df.printSchema()\r\n",
+					"# Write the data to its target.\r\n",
+					"details_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/details/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + details_table + \" USING DELTA LOCATION '\" + save_path + \"/details/'\")\r\n",
+					""
 				],
-				"execution_count": 4
+				"execution_count": 9
 			},
 			{
 				"cell_type": "code",
@@ -145,13 +154,103 @@
 						"transient": {
 							"deleting": false
 						}
-					},
-					"collapsed": false
+					}
 				},
 				"source": [
-					"display(drugs_details_df)"
+					"spark.sql(\"DROP TABLE IF EXISTS \" + geography_table)\r\n",
+					"geography_df = spark.read.parquet(load_path + \"/geography.parquet\")\r\n",
+					"geography_df.printSchema()\r\n",
+					"# Write the data to its target.\r\n",
+					"geography_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/geography/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + geography_table + \" USING DELTA LOCATION '\" + save_path + \"/geography/'\")\r\n",
+					""
 				],
-				"execution_count": 3
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + speciality_table)\r\n",
+					"speciality_df = spark.read.parquet(load_path + \"/speciality.parquet\")\r\n",
+					"speciality_df.printSchema()\r\n",
+					"# Write the data to its target.\r\n",
+					"speciality_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/speciality/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + speciality_table + \" USING DELTA LOCATION '\" + save_path + \"/speciality/'\")"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + providers_table)\r\n",
+					"providers_df = spark.read.parquet(load_path + \"/providers.parquet\")\r\n",
+					"providers_df.printSchema()\r\n",
+					"# Write the data to its target.\r\n",
+					"providers_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/providers/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + providers_table + \" USING DELTA LOCATION '\" + save_path + \"/providers/'\")"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.sql(\"DROP TABLE IF EXISTS \" + states_table)\r\n",
+					"states_df = spark.read.parquet(load_path + \"/states.parquet\")\r\n",
+					"states_df.printSchema()\r\n",
+					"# Write the data to its target.\r\n",
+					"states_df.write \\\r\n",
+					"  .format(write_format) \\\r\n",
+					"  .save(save_path + \"/states/\")\r\n",
+					"\r\n",
+					"# Create the table.\r\n",
+					"spark.sql(\"CREATE TABLE \" + states_table + \" USING DELTA LOCATION '\" + save_path + \"/states/'\")"
+				],
+				"execution_count": null
 			}
 		]
 	}
