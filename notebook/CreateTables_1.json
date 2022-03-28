@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a3228d29-fa89-4ab5-8a0d-feae1eb1585c"
+				"spark.autotune.trackingId": "50063f42-afa0-4d7f-8416-42f12b4c5ea1"
 			}
 		},
 		"metadata": {
@@ -79,13 +79,13 @@
 					"geography_table = \"geography\"\r\n",
 					"speciality_table = \"speciality\"\r\n",
 					"providers_table = \"providers\"\r\n",
-					"states_tables = \"states\"\r\n",
+					"states_table = \"states\"\r\n",
 					"\r\n",
 					"# Check if the path exists, clean up if so.\r\n",
 					"# if ():\r\n",
 					"    #mssparkutils.fs.rm(save_path, True)"
 				],
-				"execution_count": 7
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
@@ -113,7 +113,7 @@
 					"spark.sql(\"CREATE TABLE \" + drugs_table + \" USING DELTA LOCATION '\" + save_path + \"/drugs/'\")\r\n",
 					""
 				],
-				"execution_count": 8
+				"execution_count": 14
 			},
 			{
 				"cell_type": "code",
@@ -141,7 +141,7 @@
 					"spark.sql(\"CREATE TABLE \" + details_table + \" USING DELTA LOCATION '\" + save_path + \"/details/'\")\r\n",
 					""
 				],
-				"execution_count": 9
+				"execution_count": 15
 			},
 			{
 				"cell_type": "code",
@@ -169,7 +169,7 @@
 					"spark.sql(\"CREATE TABLE \" + geography_table + \" USING DELTA LOCATION '\" + save_path + \"/geography/'\")\r\n",
 					""
 				],
-				"execution_count": 10
+				"execution_count": 16
 			},
 			{
 				"cell_type": "code",
@@ -196,7 +196,7 @@
 					"# Create the table.\r\n",
 					"spark.sql(\"CREATE TABLE \" + speciality_table + \" USING DELTA LOCATION '\" + save_path + \"/speciality/'\")"
 				],
-				"execution_count": null
+				"execution_count": 17
 			},
 			{
 				"cell_type": "code",
@@ -223,7 +223,7 @@
 					"# Create the table.\r\n",
 					"spark.sql(\"CREATE TABLE \" + providers_table + \" USING DELTA LOCATION '\" + save_path + \"/providers/'\")"
 				],
-				"execution_count": null
+				"execution_count": 18
 			},
 			{
 				"cell_type": "code",
@@ -249,6 +249,24 @@
 					"\r\n",
 					"# Create the table.\r\n",
 					"spark.sql(\"CREATE TABLE \" + states_table + \" USING DELTA LOCATION '\" + save_path + \"/states/'\")"
+				],
+				"execution_count": 21
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
 				],
 				"execution_count": null
 			}
