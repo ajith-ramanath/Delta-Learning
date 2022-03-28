@@ -1,5 +1,5 @@
 {
-	"name": "CreateTables_1",
+	"name": "CreateTables",
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "50063f42-afa0-4d7f-8416-42f12b4c5ea1"
+				"spark.autotune.trackingId": "a629c463-1a62-4ae1-9cdf-db0871f16ff2"
 			}
 		},
 		"metadata": {
