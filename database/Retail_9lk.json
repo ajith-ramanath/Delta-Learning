@@ -1,0 +1,24 @@
+{
+	"name": "Retail_9lk",
+	"properties": {
+		"Name": "Retail_9lk",
+		"EntityType": "DATABASE",
+		"Description": "",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Retail\",\"Version\":\"0.1.0\"}}}",
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://ar12-hdi-spark-delta-2021-12-17t12-07-54-846z@ajithrdestinationadls.dfs.core.windows.net/Retail_9lk",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "ajithrdeltalearning-WorkspaceDefaultStorage"
+			}
+		}
+	},
+	"type": "DATABASE"
+}
