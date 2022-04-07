@@ -2,7 +2,7 @@
 	"name": "SQL script 1",
 	"properties": {
 		"content": {
-			"query": "exec sp_columns details",
+			"query": "SELECT * FROM information_schema.columns   \nWHERE table_name = 'drugs'",
 			"metadata": {
 				"language": "sql"
 			},
