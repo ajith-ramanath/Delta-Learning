@@ -1,0 +1,1363 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Workspace name",
+			"defaultValue": "ajithrdeltalearning"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
+		"ajithrdeltalearning-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ajithrdeltalearning-WorkspaceDefaultSqlServer'"
+		},
+		"synapseajithrdelta-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'synapseajithrdelta-WorkspaceDefaultSqlServer'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://questsynapseadlsg2.dfs.core.windows.net/"
+		},
+		"ajithrdeltalearning-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ajithrdestinationadls.dfs.core.windows.net"
+		},
+		"synapseajithrdelta-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ajithrdestinationadls.dfs.core.windows.net"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/DelimitedText1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "data",
+						"fileSystem": "testsynapsequest"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Parquet1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "dbo.Details.parquet",
+						"folderPath": "raw",
+						"fileSystem": "reflections"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "BeneficiaryCount",
+						"type": "INT32"
+					},
+					{
+						"name": "TotalClaimCount",
+						"type": "INT32"
+					},
+					{
+						"name": "Total30DayFillCount",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "TotalDaySupply",
+						"type": "INT32"
+					},
+					{
+						"name": "TotalDrugCost",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "BeneCountGe65",
+						"type": "INT32"
+					},
+					{
+						"name": "BeneCountGe65SuppressFlag",
+						"type": "UTF8"
+					},
+					{
+						"name": "TotalClaimCountGe65",
+						"type": "INT32"
+					},
+					{
+						"name": "Ge65SuppressFlag",
+						"type": "UTF8"
+					},
+					{
+						"name": "Total30DayFillCountGe65",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "TotalDrugCostGe65",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "TotalDaySupplyGe65",
+						"type": "INT32"
+					},
+					{
+						"name": "Year",
+						"type": "INT32"
+					},
+					{
+						"name": "YearNPI",
+						"type": "INT32"
+					},
+					{
+						"name": "YearGeoKey",
+						"type": "INT32"
+					},
+					{
+						"name": "YearSpecialtyKey",
+						"type": "INT32"
+					},
+					{
+						"name": "YearDrugKey",
+						"type": "INT32"
+					},
+					{
+						"name": "CostPerDay",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]",
+					"alwaysEncryptedSettings": {
+						"alwaysEncryptedAkvAuthType": "ManagedIdentity"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ajithrdeltalearning-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('ajithrdeltalearning-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ajithrdeltalearning-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ajithrdeltalearning-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/synapseajithrdelta-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('synapseajithrdelta-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/synapseajithrdelta-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('synapseajithrdelta-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ConcurrentAppends')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkpool3",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "202badfc-c5a5-49f9-bf34-0401e598bf77"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/delta-swat/providers/Microsoft.Synapse/workspaces/ajithrdeltalearning/bigDataPools/sparkpool3",
+						"name": "sparkpool3",
+						"type": "Spark",
+						"endpoint": "https://ajithrdeltalearning.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ConcurrentDeletes')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkpool3",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "13a58b24-0bfe-4697-9e2d-2c153af67ef9"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta/bigDataPools/sparkpool3",
+						"name": "sparkpool3",
+						"type": "Spark",
+						"endpoint": "https://synapseajithrdelta.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ConcurrentReads')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkpool3",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "6f81cbc7-2949-41c7-856d-e686c5a02613"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_sparksql",
+						"display_name": "sql"
+					},
+					"language_info": {
+						"name": "sql"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/delta-swat/providers/Microsoft.Synapse/workspaces/ajithrdeltalearning/bigDataPools/sparkpool3",
+						"name": "sparkpool3",
+						"type": "Spark",
+						"endpoint": "https://ajithrdeltalearning.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"-- Get the total claims made and total cost of drugs in year 2017 in each geo of CA state\r\n",
+							"\r\n",
+							"SELECT g.CityState, d.TotalClaimCount, d.TotalDrugCost, s.State\r\n",
+							"FROM details d\r\n",
+							"JOIN geography g ON (d.YearGeoKey = g.YearGeoKey)\r\n",
+							"JOIN states s ON (g.State = s.State)\r\n",
+							"WHERE s.state == 'CA' AND\r\n",
+							"      g.Year == '2017'\r\n",
+							"ORDER BY d.TotalDrugCost DESC\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 27
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "python"
+							}
+						},
+						"source": [
+							"%%pyspark\r\n",
+							"\r\n",
+							"# Get the top drugs in terms of cost across NY, CA, TX states administered in the years between 2014 and 2016\r\n",
+							"\r\n",
+							"states_list = ['NY', 'CA', 'TX']\r\n",
+							"years_list = [2014, 2015, 2016]\r\n",
+							"\r\n",
+							"geos_df = spark.table(\"geography\")\r\n",
+							"drugs_df = spark.table(\"drugs\")\r\n",
+							"details_df = spark.table(\"details\")\r\n",
+							"details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
+							"          .join(geos_df, geos_df['YearGeoKey'] == details_df['YearGeoKey']) \\\r\n",
+							"          .where(geos_df['State' in states_list]) \\\r\n",
+							"          .where(details_df['Year'] in years_list) \\\r\n",
+							"          .select(drugs['DrugName'])"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ConcurrentUpdates')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkpool3",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "b8a4b2b9-68b0-44b0-a988-45854c855338"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta/bigDataPools/sparkpool3",
+						"name": "sparkpool3",
+						"type": "Spark",
+						"endpoint": "https://synapseajithrdelta.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/CreateTables')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkpool3",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "a629c463-1a62-4ae1-9cdf-db0871f16ff2"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/delta-swat/providers/Microsoft.Synapse/workspaces/ajithrdeltalearning/bigDataPools/sparkpool3",
+						"name": "sparkpool3",
+						"type": "Spark",
+						"endpoint": "https://ajithrdeltalearning.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"from pyspark.sql.functions import from_json, col\r\n",
+							"from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType\r\n",
+							"\r\n",
+							"# Definitions\r\n",
+							"# Define the output formats and paths and the table name.\r\n",
+							"write_format = 'delta'\r\n",
+							"\r\n",
+							"# Load and save paths\r\n",
+							"load_path = 'abfss://datasets@ajithrdestinationadls.dfs.core.windows.net/drugs/'\r\n",
+							"save_path = 'abfss://datasets@ajithrdestinationadls.dfs.core.windows.net/drugs-delta/'\r\n",
+							"\r\n",
+							"# Tables names\r\n",
+							"drugs_table = \"drugs\"\r\n",
+							"details_table = \"details\"\r\n",
+							"geography_table = \"geography\"\r\n",
+							"speciality_table = \"speciality\"\r\n",
+							"providers_table = \"providers\"\r\n",
+							"states_table = \"states\"\r\n",
+							"\r\n",
+							"# Check if the path exists, clean up if so.\r\n",
+							"# if ():\r\n",
+							"    #mssparkutils.fs.rm(save_path, True)"
+						],
+						"outputs": [],
+						"execution_count": 20
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"spark.sql(\"DROP TABLE IF EXISTS \" + drugs_table)\r\n",
+							"drugs_df = spark.read.parquet(load_path + \"/drugs.parquet\")\r\n",
+							"drugs_df.printSchema()\r\n",
+							"# Write the data to its target.\r\n",
+							"drugs_df.write \\\r\n",
+							"  .format(write_format) \\\r\n",
+							"  .save(save_path + \"/drugs/\")\r\n",
+							"\r\n",
+							"# Create the table.\r\n",
+							"spark.sql(\"CREATE TABLE \" + drugs_table + \" USING DELTA LOCATION '\" + save_path + \"/drugs/'\")\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 14
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"spark.sql(\"DROP TABLE IF EXISTS \" + details_table)\r\n",
+							"details_df = spark.read.parquet(load_path + \"/details.parquet\")\r\n",
+							"details_df.printSchema()\r\n",
+							"# Write the data to its target.\r\n",
+							"details_df.write \\\r\n",
+							"  .format(write_format) \\\r\n",
+							"  .save(save_path + \"/details/\")\r\n",
+							"\r\n",
+							"# Create the table.\r\n",
+							"spark.sql(\"CREATE TABLE \" + details_table + \" USING DELTA LOCATION '\" + save_path + \"/details/'\")\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 15
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"spark.sql(\"DROP TABLE IF EXISTS \" + geography_table)\r\n",
+							"geography_df = spark.read.parquet(load_path + \"/geography.parquet\")\r\n",
+							"geography_df.printSchema()\r\n",
+							"# Write the data to its target.\r\n",
+							"geography_df.write \\\r\n",
+							"  .format(write_format) \\\r\n",
+							"  .save(save_path + \"/geography/\")\r\n",
+							"\r\n",
+							"# Create the table.\r\n",
+							"spark.sql(\"CREATE TABLE \" + geography_table + \" USING DELTA LOCATION '\" + save_path + \"/geography/'\")\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 16
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"spark.sql(\"DROP TABLE IF EXISTS \" + speciality_table)\r\n",
+							"speciality_df = spark.read.parquet(load_path + \"/speciality.parquet\")\r\n",
+							"speciality_df.printSchema()\r\n",
+							"# Write the data to its target.\r\n",
+							"speciality_df.write \\\r\n",
+							"  .format(write_format) \\\r\n",
+							"  .save(save_path + \"/speciality/\")\r\n",
+							"\r\n",
+							"# Create the table.\r\n",
+							"spark.sql(\"CREATE TABLE \" + speciality_table + \" USING DELTA LOCATION '\" + save_path + \"/speciality/'\")"
+						],
+						"outputs": [],
+						"execution_count": 17
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"spark.sql(\"DROP TABLE IF EXISTS \" + providers_table)\r\n",
+							"providers_df = spark.read.parquet(load_path + \"/providers.parquet\")\r\n",
+							"providers_df.printSchema()\r\n",
+							"# Write the data to its target.\r\n",
+							"providers_df.write \\\r\n",
+							"  .format(write_format) \\\r\n",
+							"  .save(save_path + \"/providers/\")\r\n",
+							"\r\n",
+							"# Create the table.\r\n",
+							"spark.sql(\"CREATE TABLE \" + providers_table + \" USING DELTA LOCATION '\" + save_path + \"/providers/'\")"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"spark.sql(\"DROP TABLE IF EXISTS \" + states_table)\r\n",
+							"states_df = spark.read.parquet(load_path + \"/states.parquet\")\r\n",
+							"states_df.printSchema()\r\n",
+							"# Write the data to its target.\r\n",
+							"states_df.write \\\r\n",
+							"  .format(write_format) \\\r\n",
+							"  .save(save_path + \"/states/\")\r\n",
+							"\r\n",
+							"# Create the table.\r\n",
+							"spark.sql(\"CREATE TABLE \" + states_table + \" USING DELTA LOCATION '\" + save_path + \"/states/'\")"
+						],
+						"outputs": [],
+						"execution_count": 21
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkpool3",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "ff50f867-86f4-446c-89c9-93936c78ec55"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/delta-swat/providers/Microsoft.Synapse/workspaces/ajithrdeltalearning/bigDataPools/sparkpool3",
+						"name": "sparkpool3",
+						"type": "Spark",
+						"endpoint": "https://ajithrdeltalearning.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool3",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"collapsed": false
+						},
+						"source": [
+							"display(spark.sql(\"SELECT * FROM details limit 10\"))"
+						],
+						"outputs": [],
+						"execution_count": 1
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "sparksql"
+							},
+							"collapsed": false
+						},
+						"source": [
+							"%%sql\r\n",
+							"\r\n",
+							"-- Get the total claims made and total cost of drugs in year 2017 in each geo of CA state\r\n",
+							"\r\n",
+							"SELECT g.CityState, d.TotalClaimCount, d.TotalDrugCost, s.State\r\n",
+							"FROM details d\r\n",
+							"JOIN geography g ON (d.YearGeoKey = g.YearGeoKey)\r\n",
+							"JOIN states s ON (g.State = s.State)\r\n",
+							"WHERE s.state == 'CA' AND\r\n",
+							"      g.Year == '2017'\r\n",
+							"ORDER BY d.TotalDrugCost DESC\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 26
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"# Get the top drugs in terms of cost across NY, CA, TX states administered in the years between 2014 and 2016\r\n",
+							"\r\n",
+							"states_list = ['NY', 'CA', 'TX']\r\n",
+							"years_list = [2014, 2015, 2016]\r\n",
+							"\r\n",
+							"geos_df = spark.table(\"geography\")\r\n",
+							"drugs_df = spark.table(\"drugs\")\r\n",
+							"details_df = spark.table(\"details\")\r\n",
+							"details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
+							"          .join(geos_df, geos_df['YearGeoKey'] == details_df['YearGeoKey']) \\\r\n",
+							"          .where(geos_df['State' in states_list]) \\\r\n",
+							"          .where(details_df['Year'] in years_list) \\\r\n",
+							"          .select(drugs['DrugName'])\r\n",
+							"\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 34
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(spark.sql(\"SELECT * FROM drugs limit 10\"))"
+						],
+						"outputs": [],
+						"execution_count": 35
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"# GEt all the drugs administered in NY state in the year 2017\r\n",
+							"\r\n",
+							"spark.table(\"details\").join()\r\n",
+							"\r\n",
+							"spark.table(\"states\").select(\"State\").where(\"State == 'NY'\")\r\n",
+							"\r\n",
+							"# display(spark.table(\"states\"))"
+						],
+						"outputs": [],
+						"execution_count": 22
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(spark.sql(\"SELECT * FROM geography limit 10\"))"
+						],
+						"outputs": [],
+						"execution_count": 36
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(spark.sql(\"SELECT * FROM providers limit 10\"))"
+						],
+						"outputs": [],
+						"execution_count": 37
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(spark.sql(\"SELECT * FROM speciality limit 10\"))"
+						],
+						"outputs": [],
+						"execution_count": 38
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(spark.sql(\"SELECT * FROM states limit 10\"))"
+						],
+						"outputs": [],
+						"execution_count": 39
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sparkpool3')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 60
+				},
+				"autoScale": {
+					"enabled": true,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 10,
+				"nodeSize": "Medium",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.1",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "uksouth"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/AzureSqlDatabase1')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/hive-ranger-policy-migration/providers/Microsoft.Sql/servers/hive-rannger-hdi-server",
+				"groupId": "sqlServer",
+				"fqdns": [
+					"hive-rannger-hdi-server.database.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-custstgacct--synapseajithrdelta-ajithrdestinationadls')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/CentricaADFVivek/providers/Microsoft.Storage/storageAccounts/ajithrdestinationadls",
+				"groupId": "dfs",
+				"fqdns": [
+					"ajithrdestinationadls.dfs.core.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sql--synapseajithrdelta')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta",
+				"groupId": "sql",
+				"fqdns": [
+					"synapseajithrdelta.e8f023e7-4a4e-4c8b-bc33-a3beb910d0fb.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sqlOnDemand--synapseajithrdelta')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "/subscriptions/2212407c-bd81-4f64-91df-1e7f04c45fdf/resourceGroups/Synapse-Delta-Experiments/providers/Microsoft.Synapse/workspaces/synapseajithrdelta",
+				"groupId": "sqlOnDemand",
+				"fqdns": [
+					"synapseajithrdelta-ondemand.e8f023e7-4a4e-4c8b-bc33-a3beb910d0fb.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		}
+	]
+}

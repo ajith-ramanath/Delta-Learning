@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "ajithrdeltalearning"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"ajithrdeltalearning-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"synapseajithrdelta-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://questsynapseadlsg2.dfs.core.windows.net/"
+		},
+		"ajithrdeltalearning-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://ajithrdestinationadls.dfs.core.windows.net"
+		},
+		"synapseajithrdelta-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://ajithrdestinationadls.dfs.core.windows.net"
+		}
+	}
+}
