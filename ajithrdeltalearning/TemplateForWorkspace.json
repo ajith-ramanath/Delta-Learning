@@ -550,15 +550,15 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "6f81cbc7-2949-41c7-856d-e686c5a02613"
+						"spark.autotune.trackingId": "db4503b4-cc88-47bc-8a9a-808bcd85ebc6"
 					}
 				},
 				"metadata": {
 					"saveOutput": true,
 					"enableDebugMode": false,
 					"kernelspec": {
-						"name": "synapse_sparksql",
-						"display_name": "sql"
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
 					},
 					"language_info": {
 						"name": "sql"
@@ -575,7 +575,8 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 10,
 						"cores": 8,
-						"memory": 56
+						"memory": 56,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -598,7 +599,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 27
+						"execution_count": 4
 					},
 					{
 						"cell_type": "code",
@@ -614,24 +615,47 @@
 							},
 							"microsoft": {
 								"language": "python"
-							}
+							},
+							"collapsed": false
 						},
 						"source": [
 							"%%pyspark\r\n",
+							"\r\n",
+							"from pyspark.sql.functions import col, desc\r\n",
 							"\r\n",
 							"# Get the top drugs in terms of cost across NY, CA, TX states administered in the years between 2014 and 2016\r\n",
 							"\r\n",
 							"states_list = ['NY', 'CA', 'TX']\r\n",
 							"years_list = [2014, 2015, 2016]\r\n",
 							"\r\n",
-							"geos_df = spark.table(\"geography\")\r\n",
-							"drugs_df = spark.table(\"drugs\")\r\n",
+							"geos_df = spark.table(\"geography\").drop(\"Year\")\r\n",
+							"drugs_df = spark.table(\"drugs\").drop(\"Year\")\r\n",
 							"details_df = spark.table(\"details\")\r\n",
-							"details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
+							"display(details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
 							"          .join(geos_df, geos_df['YearGeoKey'] == details_df['YearGeoKey']) \\\r\n",
-							"          .where(geos_df['State' in states_list]) \\\r\n",
-							"          .where(details_df['Year'] in years_list) \\\r\n",
-							"          .select(drugs['DrugName'])"
+							"          .filter(geos_df.State.isin(states_list)) \\\r\n",
+							"          .filter(details_df.Year.isin(years_list)) \\\r\n",
+							"          .orderBy(col(\"TotalDrugCost\").desc()) \\\r\n",
+							"          .select(\"DrugName\", \"TotalDrugCost\", \"CityState\", \"Year\"))"
+						],
+						"outputs": [],
+						"execution_count": 5
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
 						],
 						"outputs": [],
 						"execution_count": null
@@ -724,7 +748,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "a629c463-1a62-4ae1-9cdf-db0871f16ff2"
+						"spark.autotune.trackingId": "242513be-2f6f-4544-bdbc-1e5f0ac843e9"
 					}
 				},
 				"metadata": {
@@ -749,7 +773,8 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 10,
 						"cores": 8,
-						"memory": 56
+						"memory": 56,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -792,7 +817,7 @@
 							"    #mssparkutils.fs.rm(save_path, True)"
 						],
 						"outputs": [],
-						"execution_count": 20
+						"execution_count": 5
 					},
 					{
 						"cell_type": "code",
@@ -879,7 +904,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 16
+						"execution_count": 6
 					},
 					{
 						"cell_type": "code",
@@ -1009,7 +1034,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "ff50f867-86f4-446c-89c9-93936c78ec55"
+						"spark.autotune.trackingId": "76be88a2-e321-4d83-9f78-3db2fdb58cb1"
 					}
 				},
 				"metadata": {
@@ -1034,7 +1059,8 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 10,
 						"cores": 8,
-						"memory": 56
+						"memory": 56,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -1082,7 +1108,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 26
+						"execution_count": 2
 					},
 					{
 						"cell_type": "code",
@@ -1099,24 +1125,25 @@
 							"collapsed": false
 						},
 						"source": [
+							"from pyspark.sql.functions import col, desc\r\n",
+							"\r\n",
 							"# Get the top drugs in terms of cost across NY, CA, TX states administered in the years between 2014 and 2016\r\n",
 							"\r\n",
 							"states_list = ['NY', 'CA', 'TX']\r\n",
 							"years_list = [2014, 2015, 2016]\r\n",
 							"\r\n",
-							"geos_df = spark.table(\"geography\")\r\n",
-							"drugs_df = spark.table(\"drugs\")\r\n",
+							"geos_df = spark.table(\"geography\").drop(\"Year\")\r\n",
+							"drugs_df = spark.table(\"drugs\").drop(\"Year\")\r\n",
 							"details_df = spark.table(\"details\")\r\n",
-							"details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
+							"display(details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
 							"          .join(geos_df, geos_df['YearGeoKey'] == details_df['YearGeoKey']) \\\r\n",
-							"          .where(geos_df['State' in states_list]) \\\r\n",
-							"          .where(details_df['Year'] in years_list) \\\r\n",
-							"          .select(drugs['DrugName'])\r\n",
-							"\r\n",
-							""
+							"          .filter(geos_df.State.isin(states_list)) \\\r\n",
+							"          .filter(details_df.Year.isin(years_list)) \\\r\n",
+							"          .orderBy(col(\"TotalDrugCost\").desc()) \\\r\n",
+							"          .select(\"DrugName\", \"TotalDrugCost\", \"CityState\", \"Year\"))"
 						],
 						"outputs": [],
-						"execution_count": 34
+						"execution_count": 24
 					},
 					{
 						"cell_type": "code",
@@ -1136,7 +1163,7 @@
 							"display(spark.sql(\"SELECT * FROM drugs limit 10\"))"
 						],
 						"outputs": [],
-						"execution_count": 35
+						"execution_count": 4
 					},
 					{
 						"cell_type": "code",
@@ -1162,7 +1189,7 @@
 							"# display(spark.table(\"states\"))"
 						],
 						"outputs": [],
-						"execution_count": 22
+						"execution_count": null
 					},
 					{
 						"cell_type": "code",
@@ -1182,7 +1209,7 @@
 							"display(spark.sql(\"SELECT * FROM geography limit 10\"))"
 						],
 						"outputs": [],
-						"execution_count": 36
+						"execution_count": 5
 					},
 					{
 						"cell_type": "code",
@@ -1202,7 +1229,7 @@
 							"display(spark.sql(\"SELECT * FROM providers limit 10\"))"
 						],
 						"outputs": [],
-						"execution_count": 37
+						"execution_count": null
 					},
 					{
 						"cell_type": "code",
@@ -1222,7 +1249,7 @@
 							"display(spark.sql(\"SELECT * FROM speciality limit 10\"))"
 						],
 						"outputs": [],
-						"execution_count": 38
+						"execution_count": null
 					},
 					{
 						"cell_type": "code",
@@ -1242,7 +1269,7 @@
 							"display(spark.sql(\"SELECT * FROM states limit 10\"))"
 						],
 						"outputs": [],
-						"execution_count": 39
+						"execution_count": null
 					},
 					{
 						"cell_type": "code",
