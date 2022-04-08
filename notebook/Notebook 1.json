@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ff50f867-86f4-446c-89c9-93936c78ec55"
+				"spark.autotune.trackingId": "517089ba-001e-4125-940d-dc1ac03cc585"
 			}
 		},
 		"metadata": {
@@ -89,7 +89,7 @@
 					"ORDER BY d.TotalDrugCost DESC\r\n",
 					""
 				],
-				"execution_count": 26
+				"execution_count": 2
 			},
 			{
 				"cell_type": "code",
@@ -106,23 +106,24 @@
 					"collapsed": false
 				},
 				"source": [
+					"from pyspark.sql.functions import col, desc\r\n",
+					"\r\n",
 					"# Get the top drugs in terms of cost across NY, CA, TX states administered in the years between 2014 and 2016\r\n",
 					"\r\n",
 					"states_list = ['NY', 'CA', 'TX']\r\n",
 					"years_list = [2014, 2015, 2016]\r\n",
 					"\r\n",
-					"geos_df = spark.table(\"geography\")\r\n",
-					"drugs_df = spark.table(\"drugs\")\r\n",
+					"geos_df = spark.table(\"geography\").drop(\"Year\")\r\n",
+					"drugs_df = spark.table(\"drugs\").drop(\"Year\")\r\n",
 					"details_df = spark.table(\"details\")\r\n",
-					"details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
+					"display(details_df.join(drugs_df, details_df['YearDrugKey'] == drugs_df['YearDrugKey']) \\\r\n",
 					"          .join(geos_df, geos_df['YearGeoKey'] == details_df['YearGeoKey']) \\\r\n",
-					"          .where(geos_df['State' in states_list]) \\\r\n",
-					"          .where(details_df['Year'] in years_list) \\\r\n",
-					"          .select(drugs['DrugName'])\r\n",
-					"\r\n",
-					""
+					"          .filter(geos_df.State.isin(states_list)) \\\r\n",
+					"          .filter(details_df.Year.isin(years_list)) \\\r\n",
+					"          .orderBy(col(\"TotalDrugCost\").desc()) \\\r\n",
+					"          .select(\"DrugName\", \"TotalDrugCost\", \"CityState\", \"Year\"))"
 				],
-				"execution_count": 34
+				"execution_count": 24
 			},
 			{
 				"cell_type": "code",
@@ -141,7 +142,7 @@
 				"source": [
 					"display(spark.sql(\"SELECT * FROM drugs limit 10\"))"
 				],
-				"execution_count": 35
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
@@ -166,7 +167,7 @@
 					"\r\n",
 					"# display(spark.table(\"states\"))"
 				],
-				"execution_count": 22
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -185,7 +186,7 @@
 				"source": [
 					"display(spark.sql(\"SELECT * FROM geography limit 10\"))"
 				],
-				"execution_count": 36
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
@@ -204,7 +205,7 @@
 				"source": [
 					"display(spark.sql(\"SELECT * FROM providers limit 10\"))"
 				],
-				"execution_count": 37
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -223,7 +224,7 @@
 				"source": [
 					"display(spark.sql(\"SELECT * FROM speciality limit 10\"))"
 				],
-				"execution_count": 38
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -242,7 +243,7 @@
 				"source": [
 					"display(spark.sql(\"SELECT * FROM states limit 10\"))"
 				],
-				"execution_count": 39
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",

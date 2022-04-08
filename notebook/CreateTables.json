@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a629c463-1a62-4ae1-9cdf-db0871f16ff2"
+				"spark.autotune.trackingId": "9cab6387-5ba7-42ca-905b-53d80a42fb14"
 			}
 		},
 		"metadata": {
@@ -85,7 +85,7 @@
 					"# if ():\r\n",
 					"    #mssparkutils.fs.rm(save_path, True)"
 				],
-				"execution_count": 20
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
@@ -169,7 +169,7 @@
 					"spark.sql(\"CREATE TABLE \" + geography_table + \" USING DELTA LOCATION '\" + save_path + \"/geography/'\")\r\n",
 					""
 				],
-				"execution_count": 16
+				"execution_count": 6
 			},
 			{
 				"cell_type": "code",
